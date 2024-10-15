@@ -1,6 +1,9 @@
 <?php
 session_start(); // Inicia la sessió per a l'historial d'operacions
 
+// Defineix el mètode factorial
+define('FACTORIAL_METHOD', 'iterative'); // Pots triar 'iterative' o 'recursive'
+
 // Comprova si el formulari ha estat enviat
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Variables per als inputs
@@ -9,15 +12,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $string1 = isset($_POST['string1']) ? $_POST['string1'] : '';
     $string2 = isset($_POST['string2']) ? $_POST['string2'] : '';
     $operador = isset($_POST['operador']) ? $_POST['operador'] : '';
-    $mode_factorial = isset($_POST['mode_factorial']) ? $_POST['mode_factorial'] : 'iterative'; // Val per defecte
     $resultat = '';
 
     // Operacions numèriques
     if ($operador == 'factorial') {
         // Només permetre un input per al factorial
         if (!empty($num1) && empty($num2)) {
-            // Decidir quin mètode de factorial usar segons la selecció de l'usuari
-            if ($mode_factorial == 'iterative') {
+            // Decidir quin mètode de factorial usar segons la constant definida
+            if (FACTORIAL_METHOD == 'iterative') {
                 $resultat = factorial_iterative($num1);
             } else {
                 $resultat = factorial_recursive($num1);
@@ -106,6 +108,7 @@ if (isset($_POST['logout'])) {
 }
 ?>
 
+<link rel="stylesheet" href="style.css">
 
 <!-- Formulari per operacions numèriques -->
 <div class="Numerics">
@@ -123,13 +126,6 @@ if (isset($_POST['logout'])) {
         <button type="submit" name="operador" value="*">*</button>
         <button type="submit" name="operador" value="/">/</button>
         <button type="submit" name="operador" value="factorial">Factorial</button><br><br>
-
-        <!-- Opció per seleccionar iteratiu o recursiu -->
-        <label for="mode_factorial">Selecciona el mode de càlcul del factorial:</label><br>
-        <input type="radio" id="iterative" name="mode_factorial" value="iterative" checked>
-        <label for="iterative">Iteratiu</label><br>
-        <input type="radio" id="recursive" name="mode_factorial" value="recursive">
-        <label for="recursive">Recursiu</label><br><br>
     </form>
 </div>
 
